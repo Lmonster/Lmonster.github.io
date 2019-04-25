@@ -19,7 +19,7 @@
 <p>函数中直接返回一个匿名变量也是这种优化。直接对目的变量做优化，不需要临时变量，不需要拷贝。</p>
 <h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>这种优化只是c++ standard的一种建议（c++17之前，c++17做了强制要求），所以不能想当然的任务所有的编译器都做了这种优化。在使用这些优化之前，应该看一下编译器是否真的做了这些优化。</p>
 <h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>我在网上看到了一些意见，说这种编译器“自作主张”的优化，是对程序员不友好的。我所以为，持这种想法的人是因为，编译器做了这种优化，就不会调用诸如构造函数这类函数了，那么这些函数所造成的side effect就不会生效。<br>那么编译器做这种优化好不好呢。我认为是好的。本来像copy constructor这类的函数，从语意（semantic）而言就是一个纯粹的拷贝构造。在这些函数中间插入别的代码，产生了副作用(side effect)就造成了函数本身的不纯粹。这对于函数本身的理念是不相符的。所以我认为，编译器的这种优化是很好的。</p>
-</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">1</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="cjuwn6zjn0000mbfy8zltq8nu" data-title="C++ Copy Elision" data-url="http://yoursite.com/2019/04/25/C-Copy-Elision/" site-name="ueibo"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
+</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">2</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="cjuwnew1s0004o4fyku7rfv5k" data-title="C++ Copy Elision" data-url="http://yoursite.com/2019/04/25/C-Copy-Elision/" site-name="ueibo"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
 var duoshuoQuery = {short_name: siteName};
 (function() {
   var ds = document.createElement('script');
@@ -28,7 +28,7 @@ var duoshuoQuery = {short_name: siteName};
   ds.charset = 'UTF-8';
   (document.getElementsByTagName('head')[0] 
   || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/lmonster" title="Github" target="_blank"><i class="icon icon-github"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2019 1m0nster's Treasure<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small><small>, THEME BY <a href="https://github.com/BoizZ/hexo-theme-laughing" target="_blank">LAUGHING</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
+})();</script></div><ul class="navication"><li class="home"><a href="/"><i class="icon icon-home"></i></a></li><li><a href="/2019/04/25/C-11-STL时间/"><i class="icon icon-arror-left"></i></a></li></ul><div class="page-footer"><div class="top"><ul class="social"><li><a href="https://github.com/lmonster" title="Github" target="_blank"><i class="icon icon-github"></i></a></li></ul></div><div class="bottom"><p class="copyright">© 2019 1m0nster's Treasure<br><small>POWER BY <a href="https://hexo.io" target="_blank">HEXO</a></small><small>, THEME BY <a href="https://github.com/BoizZ/hexo-theme-laughing" target="_blank">LAUGHING</a></small></p></div></div></div><script>var wrap = document.getElementById('wrap');
 window.onload = function () {
   wrap.className += ' done';
 }</script></body></html>
