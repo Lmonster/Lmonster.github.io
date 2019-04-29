@@ -30,7 +30,23 @@
 <p>比如，对于源字符串“Q007”。</p>
 <p>如果我们去匹配<code>Q(?=\d)</code>的模式，最终的到的匹配结果为：<strong>Q</strong></p>
 <p>如果我们去匹配<code>Q[\d]*</code>的模式，最终的到的匹配结果为：<strong>Q007</strong></p>
-<h3 id="Positive-and-Negative-Lookbehind"><a href="#Positive-and-Negative-Lookbehind" class="headerlink" title="Positive and Negative Lookbehind"></a>Positive and Negative Lookbehind</h3></div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则表达式/">正则表达式</a><span class="tag-list-count">2</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="cjuwoq82f00046gfyvgxmqj0y" data-title="Regex-Lookahead&amp;Lookbehind Zero-Length Assertions" data-url="http://yoursite.com/2019/04/25/Regex-Lookahead-Lookbehind-Zero-Length-Assertions/" site-name="ueibo"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
+<h3 id="Positive-and-Negative-Lookbehind"><a href="#Positive-and-Negative-Lookbehind" class="headerlink" title="Positive and Negative Lookbehind"></a>Positive and Negative Lookbehind</h3><h4 id="表达式-1"><a href="#表达式-1" class="headerlink" title="表达式"></a>表达式</h4><ul>
+<li><p>Positive Lookbehind</p>
+<p><code>(?=${regex})${regex}</code></p>
+</li>
+<li><p>Negative Lookbehind</p>
+<p><code>(?!${regex})${regex}</code></p>
+</li>
+</ul>
+<h4 id="应用-1"><a href="#应用-1" class="headerlink" title="应用"></a>应用</h4><ul>
+<li><p>匹配一个字符串A，这个A的特征是A的前面不能跟着某一种模式的字符串。</p>
+<p>例如，我想匹配一个Q开头的，但是前面不能是数字的字符串。那么就可以使用<code>(?!\d)Q</code>这样的表达式</p>
+</li>
+<li><p>匹配一个字符串A，这个A的特征是A的前面必须跟着某一种模式的字符串。</p>
+<p>例如，我想匹配一个Q开头的，并且前面必须是数字的字符串。那么就可以使用<code>(?=\d)Q</code>这样的表达式</p>
+</li>
+</ul>
+<h2 id="深度理解"><a href="#深度理解" class="headerlink" title="深度理解"></a>深度理解</h2></div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/正则表达式/">正则表达式</a><span class="tag-list-count">2</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="cjuwoq82f00046gfyvgxmqj0y" data-title="Regex-Lookahead&amp;Lookbehind Zero-Length Assertions" data-url="http://yoursite.com/2019/04/25/Regex-Lookahead-Lookbehind-Zero-Length-Assertions/" site-name="ueibo"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
 var duoshuoQuery = {short_name: siteName};
 (function() {
   var ds = document.createElement('script');
