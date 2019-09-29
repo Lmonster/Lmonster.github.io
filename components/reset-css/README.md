@@ -1,5 +1,11 @@
-<h1 id="reset-css"><a href="#reset-css" class="headerlink" title="reset-css"></a>reset-css</h1><p>这个样式表写给还在为前端开发中各个浏览器样式不统一问题纠结的同学，但不包含Hack。<br>大家可以把样式表下载到本地使用，也可以使用CDN调取。</p>
-<h3 id="文件目录"><a href="#文件目录" class="headerlink" title="文件目录"></a>文件目录</h3><pre><code class="lang-bash">.
+# reset-css
+这个样式表写给还在为前端开发中各个浏览器样式不统一问题纠结的同学，但不包含Hack。
+大家可以把样式表下载到本地使用，也可以使用CDN调取。
+
+### 文件目录
+
+``` bash
+.
 ├── dist # 1.2.2 版本
 ├── public # 2.0.0 版本
 │   ├── main # 通用重置样式表：包含IE、MacOS Safari 及 手机重置样式表 的所有特性
@@ -10,4 +16,4 @@
 ├── gruntfile.js
 ├── package.json
 └── README.md
-</code></pre>
+```
