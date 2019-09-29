@@ -1,8 +1,4 @@
-<!DOCTYPE html><html lang="zh-cn"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description"><meta name="keywords" content="Hexo, C++, 计算机, 网络">
-	<script type="text/javascript"
-		src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-	</script>
-	<title>Ford-Fulkerson算法正确性证明 - 1m0nster's Treasure</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://lmonster.github.com/tags/C"><span>C++ Tags</span></a></li><li><a href="https://lmonster.github.io/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><span>正则表达式</span></a></li></ul><div class="wrapper" id="wrap"><div class="post-header"><label class="navi-button light" for="navi">MENU</label><img class="background" src="http://callfiles.ueibo.com/hexo-theme-laughing/post_background.jpg"><div class="post-title"><h1 class="title">Ford-Fulkerson算法正确性证明</h1><ul class="meta"><li><i class="icon icon-author"></i>1m0nster</li><li><i class="icon icon-clock"></i>5 Minutes</li><li><i class="icon icon-calendar"></i>September 28, 2019</li></ul></div></div><div class="article-content" style="max-width:800px"><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>图论中有一类重要的问题就是流量问题。求一个流网络的最大流量。那么可以用的方法有很多，比较经典的是FF(Ford-Fulkerson)算法。本文主要描述FF算法正确性的证明。涉及到的知识点：</p>
+<!DOCTYPE html><html lang="zh-cn"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"><meta name="format-detection" content="telephone=no"><meta name="format-detection" content="email=no"><meta name="description"><meta name="keywords" content="Hexo, C++, 计算机, 网络"><title>Ford-Fulkerson算法正确性证明 - 1m0nster's Treasure</title><link rel="stylesheet" href="/css/main_style.min.css"><link rel="icon" href="/favicon.ico"></head><body><input id="navi" type="checkbox"><ul class="main-navication"><li><a href="/"><span>Home</span></a></li><li><a href="https://lmonster.github.com/tags/C"><span>C++ Tags</span></a></li><li><a href="https://lmonster.github.io/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"><span>正则表达式</span></a></li></ul><div class="wrapper" id="wrap"><div class="post-header"><label class="navi-button light" for="navi">MENU</label><img class="background" src="http://callfiles.ueibo.com/hexo-theme-laughing/post_background.jpg"><div class="post-title"><h1 class="title">Ford-Fulkerson算法正确性证明</h1><ul class="meta"><li><i class="icon icon-author"></i>1m0nster</li><li><i class="icon icon-clock"></i>6 Minutes</li><li><i class="icon icon-calendar"></i>September 28, 2019</li></ul></div></div><div class="article-content" style="max-width:800px"><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>图论中有一类重要的问题就是流量问题。求一个流网络的最大流量。那么可以用的方法有很多，比较经典的是FF(Ford-Fulkerson)算法。本文主要描述FF算法正确性的证明。涉及到的知识点：</p>
 <ol>
 <li>流网络</li>
 <li>Fold-Fulkerson算法</li>
@@ -11,63 +7,48 @@
 </ol>
 <p>其中我们用最大流-最小割定理来证明FF算法的正确性</p>
 <h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="流网络"><a href="#流网络" class="headerlink" title="流网络"></a>流网络</h3><p>一个流网络的定义如下：</p>
-<p>流网络$$G=(V, E)$$是一个有向图。具有如下属性：</p>
+<p>流网络<script type="math/tex">G=(V, E)</script>是一个有向图。具有如下属性：</p>
 <ul>
-<li>每条边$$(u,v) \in E$$有一个非负的容量值$$c(u, v) \ge 0$$</li>
-<li>如果$$(u,v) \in E$$ ，那么$$(v,u) \notin E$$</li>
-<li>如果$$(v,u) \notin E$$ ，则有 $$c(u,v) = 0$$</li>
+<li>每条边<script type="math/tex">(u,v) \in E</script>有一个非负的容量值<script type="math/tex">c(u, v) \ge 0</script></li>
+<li>如果<script type="math/tex">(u,v) \in E</script> ，那么<script type="math/tex">(v,u) \notin E</script></li>
+<li>如果<script type="math/tex">(v,u) \notin E</script> ，则有 <script type="math/tex">c(u,v) = 0</script></li>
 <li>不允许有自循环</li>
 </ul>
-<p>流网络中有两个重要的顶点$$s,t \in V$$，其中s叫做源点（source），t叫做汇点（sink）。流网络中的流是从源地点到汇点。流网络中的所有流都从源点出发，然后最终都流入汇点。</p>
+<p>流网络中有两个重要的顶点<script type="math/tex">s,t \in V</script>，其中s叫做源点（source），t叫做汇点（sink）。流网络中的流是从源地点到汇点。流网络中的所有流都从源点出发，然后最终都流入汇点。</p>
 <p>如图就是一个流网络的示意图：</p>
 <p><img src="/img/post_imgs/Ford-Fulkerson算法正确性证明/maximum_flow_0.png" alt="流网络示意图"></p>
 <h3 id="流"><a href="#流" class="headerlink" title="流"></a>流</h3><p>网络G的流是一个如下的一个函数：</p>
-<p>$$f: V \times V \rightarrow R$$</p>
-<p>流具有如下性质：</p>
+<script type="math/tex; mode=display">f: V \times V \rightarrow R</script><p>流具有如下性质：</p>
 <ul>
 <li><p>容量限制：</p>
-<p>$$f(u,v) \le c(u,v) for \space all \space u,v \in V$$ </p>
-<p>也就是说，一个流的值是不能大于该流的容量</p>
+<script type="math/tex; mode=display">f(u,v) \le c(u,v) for \space all \space u,v \in V</script><p>也就是说，一个流的值是不能大于该流的容量</p>
 </li>
 <li><p>流量守恒：</p>
-<p>$$\sum_{v \in V}f(u,v) = \sum_{v \in V}f(v,u)$$ ,$$\forall u \in {V-{s,t}}$$</p>
-<p>也就是说，对于任意的非s，非t顶点，从这个顶点流出的流和流入的流是相等的</p>
-<p>并且如果$$(u,v) \notin E, \space f(u,v) = 0 $$</p>
+<script type="math/tex; mode=display">\sum_{v \in V}f(u,v) = \sum_{v \in V}f(v,u)$$ ,$$\forall u \in {V-\{s,t\}}</script><p>也就是说，对于任意的非s，非t顶点，从这个顶点流出的流和流入的流是相等的</p>
+<p>并且如果<script type="math/tex">(u,v) \notin E, \space f(u,v) = 0</script></p>
 </li>
 </ul>
-<h3 id="流的值"><a href="#流的值" class="headerlink" title="流的值"></a>流的值</h3><p>一个流的值用$$\vert f \vert$$表示</p>
-<p>$$|f| = \sum_{v \in V}f(s, v)$$</p>
-<h2 id="割"><a href="#割" class="headerlink" title="割"></a>割</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>我们定义一个流网络的割（cut）为：</p>
-<p>$$(S,T)$$， 其中$$S \cap T = \emptyset，S \cup T = V$$</p>
-<p>$$s \in S, t \in T$$</p>
-<p><strong>就是将一个图分割为两个不相交的集合。s在其中一个集合中，t在另外一个集合中，并且两个集合中的点是不相连的</strong></p>
+<h3 id="流的值"><a href="#流的值" class="headerlink" title="流的值"></a>流的值</h3><p>一个流的值用<script type="math/tex">\vert f \vert</script>表示</p>
+<script type="math/tex; mode=display">|f| = \sum_{v \in V}f(s, v)</script><h2 id="割"><a href="#割" class="headerlink" title="割"></a>割</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>我们定义一个流网络的割（cut）为：</p>
+<script type="math/tex; mode=display">(S,T)$$， 其中$$S \cap T = \emptyset，S \cup T = V</script><script type="math/tex; mode=display">s \in S, t \in T</script><p><strong>就是将一个图分割为两个不相交的集合。s在其中一个集合中，t在另外一个集合中，并且两个集合中的点是不相连的</strong></p>
 <p>我们引入一些网络流割的属性：</p>
-<h4 id="割的净流量"><a href="#割的净流量" class="headerlink" title="割的净流量"></a>割的净流量</h4><p>$$ f(S, T) = \sum_{u \in S}\sum_{v \in T}f(u,v) - \sum_{u \in S}\sum_{v \in T}f(v,u) $$</p>
-<h4 id="割的容量"><a href="#割的容量" class="headerlink" title="割的容量"></a>割的容量</h4><p>$$c(S, T) = \sum_{u \in S}\sum_{v \in T}c(u,v)  $$</p>
-<h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><p>为了证明FF的正确性，我们需要引入一个引理来辅助证明过程</p>
-<h4 id="引理1"><a href="#引理1" class="headerlink" title="引理1"></a>引理1</h4><p>设$$f$$为流网络中的一个流，横跨任何切割的净流量都相同，都为$$|f|$$，即流的值。即证明$ |f| = f(S,T) $</p>
+<h4 id="割的净流量"><a href="#割的净流量" class="headerlink" title="割的净流量"></a>割的净流量</h4><script type="math/tex; mode=display">f(S, T) = \sum_{u \in S}\sum_{v \in T}f(u,v) - \sum_{u \in S}\sum_{v \in T}f(v,u)</script><h4 id="割的容量"><a href="#割的容量" class="headerlink" title="割的容量"></a>割的容量</h4><script type="math/tex; mode=display">c(S, T) = \sum_{u \in S}\sum_{v \in T}c(u,v)</script><h2 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h2><p>为了证明FF的正确性，我们需要引入一个引理来辅助证明过程</p>
+<h4 id="引理1"><a href="#引理1" class="headerlink" title="引理1"></a>引理1</h4><p>设<script type="math/tex">f</script>为流网络中的一个流，横跨任何切割的净流量都相同，都为<script type="math/tex">|f|</script>，即流的值。即证明$ |f| = f(S,T) $</p>
 <h5 id="证明引理1"><a href="#证明引理1" class="headerlink" title="证明引理1:"></a>证明引理1:</h5><p>证明有两种方式，一种是严格的数学证明，另外一种是直观上的感受，如果对于数学证明没有兴趣的话，那么可以直接去看直观上的证明。</p>
-<h5 id="数学证明"><a href="#数学证明" class="headerlink" title="数学证明"></a>数学证明</h5><p>对于<strong>流量守恒</strong>特性，我们有：$$\forall u \in V - {s,t}$$</p>
-<p>$$\sum_{v \in V}f(u,v) - \sum_{v \in V}f(v,u) = 0 $$</p>
-<p>根据流的值的定义：</p>
-<p>$$|f| = \sum_{v \in V}f(s,v) - \sum_{v \in V}f(v,s)$$，将上面的式子针对每一个$$u \in S - {s}$$相加得到</p>
-<p>$$|f| = \sum_{v \in V}f(s,v) - \sum_{v \in V}f(v,s) + \sum_{u \in S-{s}}(\sum_{v \in V}f(u,v) - \sum_{v \in V}f(v,u))$$</p>
-<p>$$|f| = \sum_{v \in V}f(s,v) - \sum_{v \in V}f(v,s) + \sum_{u \in S-{s}}\sum_{v \in V}f(u,v) - \sum_{u \in S-{s}}\sum_{v \in V}f(v,u)$$</p>
-<p>$$|f| = \sum_{v \in V}(f(s,v) + \sum_{u \in S-{s}}f(u,v)) - \sum_{v \in V}(f(v,u) + \sum_{u \in S-{s}}f(v,u))$$</p>
-<p>$$|f| = \sum_{v \in V}\sum_{u \in S}f(u,v) - \sum_{v \in V}\sum_{u \in S}f(v,u)$$</p>
-<p>$$|f| = \sum_{v\in V-S}\sum_{u \in S}f(u,v) + \sum_{v\in S}\sum_{u\in S}f(u,v) - (\sum_{v\in V-S}\sum_{u\in S}f(v,u) + \sum_{v\in S}\sum_{u\in S}f(v,u))$$</p>
-<p>$$|f| = (\sum_{v\in T}\sum_{u \in S}f(u,v) - \sum_{v\in T}\sum_{u\in S}f(v,u)) +( \sum_{v\in S}\sum_{u\in S}f(u,v) - \sum_{v\in S}\sum_{u\in S}f(v,u))$$</p>
-<p>我们可以看到，这个等式前面括号的一部分就是$f(S,T)$，后面的一部分根据<strong>流量守恒</strong>知道为0，</p>
+<h5 id="数学证明"><a href="#数学证明" class="headerlink" title="数学证明"></a>数学证明</h5><p>对于<strong>流量守恒</strong>特性，我们有：<script type="math/tex">\forall u \in V - \{s,t\}</script></p>
+<script type="math/tex; mode=display">\sum_{v \in V}f(u,v) - \sum_{v \in V}f(v,u) = 0</script><p>根据流的值的定义：</p>
+<script type="math/tex; mode=display">|f| = \sum_{v \in V}f(s,v) - \sum_{v \in V}f(v,s)$$，将上面的式子针对每一个$$u \in S - \{s\}$$相加得到
+
+$$|f| = \sum_{v \in V}f(s,v) - \sum_{v \in V}f(v,s) + \sum_{u \in S-\{s\}}(\sum_{v \in V}f(u,v) - \sum_{v \in V}f(v,u))</script><script type="math/tex; mode=display">|f| = \sum_{v \in V}f(s,v) - \sum_{v \in V}f(v,s) + \sum_{u \in S-\{s\}}\sum_{v \in V}f(u,v) - \sum_{u \in S-\{s\}}\sum_{v \in V}f(v,u)</script><script type="math/tex; mode=display">|f| = \sum_{v \in V}(f(s,v) + \sum_{u \in S-\{s\}}f(u,v)) - \sum_{v \in V}(f(v,u) + \sum_{u \in S-\{s\}}f(v,u))</script><script type="math/tex; mode=display">|f| = \sum_{v \in V}\sum_{u \in S}f(u,v) - \sum_{v \in V}\sum_{u \in S}f(v,u)</script><script type="math/tex; mode=display">|f| = \sum_{v\in V-S}\sum_{u \in S}f(u,v) + \sum_{v\in S}\sum_{u\in S}f(u,v) - (\sum_{v\in V-S}\sum_{u\in S}f(v,u) + \sum_{v\in S}\sum_{u\in S}f(v,u))</script><script type="math/tex; mode=display">|f| = (\sum_{v\in T}\sum_{u \in S}f(u,v) - \sum_{v\in T}\sum_{u\in S}f(v,u)) +( \sum_{v\in S}\sum_{u\in S}f(u,v) - \sum_{v\in S}\sum_{u\in S}f(v,u))</script><p>我们可以看到，这个等式前面括号的一部分就是$f(S,T)$，后面的一部分根据<strong>流量守恒</strong>知道为0，</p>
 <p>因此</p>
-<p>$$|f| = f(S,T) + 0 = f(S,T)$$</p>
-<p>证毕。</p>
-<h5 id="直观证明"><a href="#直观证明" class="headerlink" title="直观证明"></a>直观证明</h5><p>根据流的定义，我们知道一个流网络$G$的流$f$的值是所有从$s$流出的流的和，减去所有进入$s$的流。那么从$s$出去的流，最后都会进入到$t$中。而我们任意的一个切割，都将这个网络分成了两个不相连的部分，$s$位于一部分$t$位于一部分。如果流想要从$s$到$t$的话，那么必须经过这个切割。而流网络是没有损耗的，因此经过这个切割的流的值，一定等于从$s$中流出的值和流入值的差，也就是整个网络的流的值。即$$|f| = f(S,T)$$。证毕。</p>
+<script type="math/tex; mode=display">|f| = f(S,T) + 0 = f(S,T)</script><p>证毕。</p>
+<h5 id="直观证明"><a href="#直观证明" class="headerlink" title="直观证明"></a>直观证明</h5><p>根据流的定义，我们知道一个流网络$G$的流$f$的值是所有从$s$流出的流的和，减去所有进入$s$的流。那么从$s$出去的流，最后都会进入到$t$中。而我们任意的一个切割，都将这个网络分成了两个不相连的部分，$s$位于一部分$t$位于一部分。如果流想要从$s$到$t$的话，那么必须经过这个切割。而流网络是没有损耗的，因此经过这个切割的流的值，一定等于从$s$中流出的值和流入值的差，也就是整个网络的流的值。即<script type="math/tex">|f| = f(S,T)</script>。证毕。</p>
 <h4 id="推论1"><a href="#推论1" class="headerlink" title="推论1"></a>推论1</h4><p>有了引理1，我们就可以有推论1：网络的流小于或等于网络任意切割$(S,T)$的切割容量，即$f(S,T) \le c(S, T) ,\forall c(S,T)$</p>
 <p>证明推论1:</p>
 <p>根据引理1，我们知道。网络的流等于任意横跨切割的流，而再根据<strong>容量限制</strong>我们知道横跨任意切割的流小于等于切割的容量。传递过来，我们就有，网络的流小鱼等于任意切割的容量，即$f(S,T) \le c(S,T) \forall c(S,T)$</p>
 <p>证毕。</p>
 <h4 id="定理1"><a href="#定理1" class="headerlink" title="定理1"></a>定理1</h4><p>有了推论1，我们就可以很明显的得出。一个网络的最大流的值等于一个最小切割的容量。即最大流-最小切割定理。</p>
-</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithms/">Algorithms</a><span class="tag-list-count">1</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="ck13o73an0000bgfyy1alfz15" data-title="Ford-Fulkerson算法正确性证明" data-url="http://yoursite.com/2019/09/28/Ford-Fulkerson算法正确性证明/" site-name="ueibo"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
+</div><div class="article-meta" style="max-width:800px"><div class="tags"><i class="icon icon-tag"></i><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a><span class="tag-list-count">1</span></li></ul></div></div><div class="article-comment" style="max-width:800px"><div class="ds-thread" id="ds-thread" data-thread-key="ck14fwepb0005obfyozcf3few" data-title="Ford-Fulkerson算法正确性证明" data-url="http://yoursite.com/2019/09/28/Ford-Fulkerson算法正确性证明/" site-name="ueibo"></div><script>var siteName = document.getElementById('ds-thread').getAttribute('site-name');
 var duoshuoQuery = {short_name: siteName};
 (function() {
   var ds = document.createElement('script');
